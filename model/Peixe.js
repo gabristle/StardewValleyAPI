@@ -1,5 +1,4 @@
 const {PeixeModel} = require('./bd');
-const limites = [5, 10, 30];
 
 module.exports = {
     addPeixe: async(peixeData) =>{

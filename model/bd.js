@@ -4,7 +4,7 @@ const sequelize = new Sequelize({
     storage: './database.sqlite'
 });//obj de conexao
 
-const PeixesModel = sequelize.define('Peixes', {
+const PeixeModel = sequelize.define('Peixe', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -32,5 +32,5 @@ const PeixesModel = sequelize.define('Peixes', {
 
 module.exports = {
     sequelize: sequelize,
-    PeixesModel: PeixesModel
+    PeixeModel: PeixeModel
 };

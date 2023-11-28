@@ -3,6 +3,7 @@ var router = express.Router();
 const {sequelize} = require('../model/bd');
 const PeixeService = require('../model/Peixe');
 const limites = [5, 10, 30];
+const Auth = require('../helpers/Auth');
 
 //listar os peixes
 router.get('/:pagina/:limite', async (req, res) => {
@@ -35,7 +36,7 @@ router.get('/view/:id', async (req, res) => {
 });
 
 //inserir novo peixe
-router.post('/', async (req, res) => {
+router.post('/', Auth.validaAcesso, async(req, res) => {
   try{
     let peixe = await PeixeService.addPeixe(req.body);
     res.json({peixe: peixe});
@@ -45,16 +46,16 @@ router.post('/', async (req, res) => {
 });
 
 //alterar um peixe
-router.put('/:id', async (req, res) =>{
+router.put('/:id', Auth.validaAcesso, async (req, res) =>{
   try{
     let peixe = await PeixeService.alteraPeixe(req.params.id, req.body);
     res.json({peixe: peixe});
   } catch(e){
-    res.status(400).json({mensagem: "Falha ao salvar o peixe"});
+    res.status(400).json({mensagem: "Falha ao alterar o peixe"});
   }
 });
 
-router.delete('/:id', async(req, res) =>{
+router.delete('/:id', Auth.validaAcesso, async(req, res) =>{
   res.json({peixe: await PeixeService.deleta(req.params.id)});
 });
 

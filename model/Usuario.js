@@ -28,5 +28,13 @@ module.exports = {
 
     deleta: async(id) => {
         return await UserModel.destroy({where: {id: id}});
+    },
+
+    tornarAdmin: async(id) => {
+        const user = UserModel.findByPk(id);
+        user.isAdmin = true;
+        await user.save();
+        return user;
     }
+    
 };

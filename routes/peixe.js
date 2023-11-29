@@ -62,7 +62,6 @@ router.delete('/:id', Auth.validaAcesso, async(req, res) =>{
 /* GET home page. */
 router.get('/install', async function(req, res, next) {
   await sequelize.sync({force: true});
-
   res.json({mensagem: 'Instalado com sucesso!'});
 });
 

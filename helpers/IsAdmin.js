@@ -1,6 +1,6 @@
 module.exports = {
     isAdmin: (req, res, next) => {
-        const user = req.user;
+        const user = req.usuario;
         if(user.isAdmin){
             next();
         }else{

@@ -16,12 +16,37 @@ module.exports = {
         });
     },
 
-    /*isAdmin: (req, res, next) => {
-        const user = req.usuario;
-        if(user.isAdmin){
-            next();
-        }else{
-            res.status(400).json({mensagem: 'Acesso negado! Voce nao tem permissao para relizar essa acao.'})
+    isAdmin: async (req, res, next) => {
+        const token = req.header('Authorization');
+
+        if (!token) {
+            return res.status(401).json({ mensagem: 'Token de autenticação ausente.' });
         }
-    }*/
+
+        try {
+            const decoded = jwt.verify(token, '123!@#');
+            const user = await UserModel.findByPk(decoded.usuario);
+
+            if (!user) {
+                return res.status(401).json({ mensagem: 'Usuário não encontrado.' });
+            }
+
+            // Adiciona informações do usuário, incluindo isAdmin, ao objeto de solicitação (req)
+            req.usuario = {
+                id: user.id,
+                usuario: user.usuario,
+                isAdmin: user.isAdmin,
+            };
+
+            // Verifica se o usuário é um administrador
+            if (req.usuario.isAdmin) {
+                next();
+            } else {
+                res.status(403).json({ mensagem: 'Acesso negado. Somente administradores podem realizar esta operação.' });
+            }
+        } catch (error) {
+            console.error(error);
+            return res.status(401).json({ mensagem: 'Token inválido.' });
+        }
+    }
 };

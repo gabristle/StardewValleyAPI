@@ -6,6 +6,7 @@ const UserService = require('../model/Usuario');
 const IsAdmin = require('../helpers/IsAdmin');
 const Auth = require('../helpers/Auth');
 
+//altera os dados do usuario, não funciona
 router.put('/', Auth.validaAcesso, async(req, res) => {
     try{
         let userModificado = await UserService.alteraUser(req.usuario.id, req.body);
@@ -16,7 +17,7 @@ router.put('/', Auth.validaAcesso, async(req, res) => {
 });
 
 //administrador altera dados dos usuários não administradores
-router.put('/:id', IsAdmin.isAdmin, async(req, res) =>{
+router.put('/:id', Auth.validaAcesso, async(req, res) =>{
     try{
         let userModificado = await UserService.buscaPorID(req.params.id);
         if(userModificado.isAdmin){
@@ -30,7 +31,8 @@ router.put('/:id', IsAdmin.isAdmin, async(req, res) =>{
     }
 });
 
-router.put('/admin/:id', IsAdmin.isAdmin, async(req, res) => {
+//torna um usuário administrador, n funciona
+router.put('/admin/:id', Auth.validaAcesso, async(req, res) => {
     try{
         let user = req.params.id;
         res.json({admin: await UserService.tornarAdmin(user)});
@@ -39,6 +41,7 @@ router.put('/admin/:id', IsAdmin.isAdmin, async(req, res) => {
     }
 });
 
+//cria um usuario
 router.post('/', async (req, res) => {
     let {usuario, senha} = req.body;
     if(usuario != "" && senha != ""){
@@ -50,7 +53,8 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.delete('/:id', IsAdmin.isAdmin, async (req, res) => {
+//deleta um usuario, apenas administradores podem deletar
+router.delete('/:id', Auth.validaAcesso, async (req, res) => {
     let userExcluido = req.params.id;
     if(userExcluido.isAdmin){
         res.status(400).json({mensagem: 'Um administrador nao pode excluir outro admnistrador'});

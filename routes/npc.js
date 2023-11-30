@@ -5,6 +5,7 @@ const NPCService = require('../model/NPC');
 const limites = [5, 10, 30];
 const Auth = require('../helpers/Auth');
 
+//listar os NPCS
 router.get('/:pagina/:limite', async (req, res) => {
     const pagina = parseInt(req.params.pagina);
     const limite = parseInt(req.params.limite);
@@ -16,6 +17,7 @@ router.get('/:pagina/:limite', async (req, res) => {
     }
 });
 
+//listar um NPC por ID
 router.get('/:id', async (req, res) => {
     try{
       res.json({NPC: await NPCService.buscaPorID(req.params.id)});
@@ -24,6 +26,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+//inserir novo NPC
 router.post('/', Auth.validaAcesso, async(req, res) => {
     try{
       let NPC = await NPCService.addNPC(req.body);
@@ -33,6 +36,7 @@ router.post('/', Auth.validaAcesso, async(req, res) => {
     }
 });
 
+//alterar um NPC
 router.put('/:id', Auth.validaAcesso, async (req, res) =>{
     try{
       let NPC = await NPCService.alteraNPC(req.params.id, req.body);
@@ -40,8 +44,9 @@ router.put('/:id', Auth.validaAcesso, async (req, res) =>{
     } catch(e){
       res.status(400).json({mensagem: "Falha ao alterar o NPC"});
     }
-  });
+});
   
+//excluir um NPC
 router.delete('/:id', Auth.validaAcesso, async(req, res) =>{
     res.json({NPC: await NPCService.deleta(req.params.id)});
 });

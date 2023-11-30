@@ -5,6 +5,7 @@ const EstacaoService = require('../model/Estacao');
 const limites = [5, 10, 30];
 const Auth = require('../helpers/Auth');
 
+//listar estações
 router.get('/:pagina/:limite', async (req,res) => {
     const pagina = parseInt(req.params.pagina);
     const limite = parseInt(req.params.limite);
@@ -16,6 +17,7 @@ router.get('/:pagina/:limite', async (req,res) => {
     }
 });
 
+//listar uma estação por ID
 router.get('/:id', async (req, res) => {
     try{
         res.json({lista: await EstacaoService.buscaPorID(req.params.id)});
@@ -24,6 +26,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+//inserir nova estação
 router.post('/', Auth.validaAcesso, async (req,res) => {
     try{
         let estacao = await EstacaoService.addEstacao(req.body);
@@ -33,6 +36,7 @@ router.post('/', Auth.validaAcesso, async (req,res) => {
     }
 });
 
+//alterar uma estação
 router.put('/:id', Auth.validaAcesso, async (req, res) => {
     try{
         let estacao = await EstacaoService.alteraEstacao(req.params.id, req.body);
@@ -42,6 +46,7 @@ router.put('/:id', Auth.validaAcesso, async (req, res) => {
     }
 });
 
+//excluir uma estação
 router.delete('/:id', Auth.validaAcesso, async (req, res) => {
     try{
         res.json({estacao: await EstacaoService.deleta(req.params.id)});

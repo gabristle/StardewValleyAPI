@@ -55,6 +55,7 @@ router.put('/:id', Auth.validaAcesso, async (req, res) =>{
   }
 });
 
+//excluir um peixe
 router.delete('/:id', Auth.validaAcesso, async(req, res) =>{
   res.json({peixe: await PeixeService.deleta(req.params.id)});
 });

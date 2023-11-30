@@ -22,6 +22,10 @@ module.exports = {
         return await PeixeModel.findAll({where: {local: local}});
     },
 
+    listaPorEstacao: async(estacao) => {
+        return await PeixeModel.findAll({where: {estacaoId: estacao}});
+    },
+
     buscaPorID: async (id) => {
         return await PeixeModel.findByPk(id);
     },

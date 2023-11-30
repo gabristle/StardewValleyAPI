@@ -6,6 +6,8 @@ var logger = require('morgan');
 
 var peixeRouter = require('./routes/peixe');
 var loginRouter = require('./routes/login');
+var estacaoRouter = require('./routes/estacao');
+var NPCRouter = require('./routes/npc');
 
 var app = express();
 
@@ -17,6 +19,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/peixe', peixeRouter);
 app.use('/login', loginRouter);
+app.use('/estacao', estacaoRouter);
+app.use('/npc', NPCRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

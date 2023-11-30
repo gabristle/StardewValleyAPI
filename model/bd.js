@@ -18,14 +18,6 @@ const PeixeModel = sequelize.define('Peixe', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    estacaoId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'Estacao',
-            key: 'id'
-        }
-    },
     xp: {
         type: DataTypes.INTEGER,
         allowNull: false
@@ -57,18 +49,11 @@ const NPCModel = sequelize.define('NPC', {
     nome: {
         type: DataTypes.STRING,
         allowNull: false
-    },
-    estacaoId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'Estacao',
-            key: 'id'
-        }
-    },
+    }
 });
 
-EstacaoModel.hasMany(NPCModel, { foreignKey: 'estacaoId', as: 'aniversariantes' });
+PeixeModel.belongsTo(EstacaoModel);
+NPCModel.belongsTo(EstacaoModel);
 
 const UserModel = sequelize.define('User', {
     id: {

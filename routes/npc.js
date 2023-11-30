@@ -51,4 +51,9 @@ router.delete('/:id', Auth.validaAcesso, async(req, res) =>{
     res.json({NPC: await NPCService.deleta(req.params.id)});
 });
 
+router.get('/install', async function(req, res, next) {
+  await sequelize.sync({force: true});
+  res.json({mensagem: 'Instalado com sucesso!'});
+});
+
 module.exports = router;

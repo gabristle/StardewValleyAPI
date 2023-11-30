@@ -26,6 +26,15 @@ router.get('/:local', async (req,res) => {
   }
 });
 
+//listar por estacao
+router.get('/:estacao', async (req,res) => {
+  try{
+    res.json({lista: await PeixeService.listaPorEstacao(req.params.estacao)});
+  }catch(e){
+    res.status(400).json({mensagem: 'Falha ao listar peixes da estacao'});
+  }
+});
+
 //listar um peixe por ID
 router.get('/:id', async (req, res) => {
   try{

@@ -93,5 +93,7 @@ const UserModel = sequelize.define('User', {
 module.exports = {
     sequelize: sequelize,
     PeixeModel: PeixeModel,
-    UserModel: UserModel
+    UserModel: UserModel,
+    EstacaoModel: EstacaoModel,
+    NPCModel: NPCModel
 };

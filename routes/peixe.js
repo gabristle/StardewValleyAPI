@@ -13,7 +13,7 @@ router.get('/:pagina/:limite', async (req, res) => {
     res.status(400).json({mensagem: "Falha ao listar peixes"});
   }else{
       const peixes = await PeixeService.listaPeixe(pagina, limite);
-      res.json({ lista: peixes });
+      res.json({ lista: peixes});
   }
 });
 
@@ -27,7 +27,7 @@ router.get('/:local', async (req,res) => {
 });
 
 //listar um peixe por ID
-router.get('/view/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try{
     res.json({peixe: await PeixeService.buscaPorID(req.params.id)});
   } catch(e){

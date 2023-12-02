@@ -1,10 +1,22 @@
+const jwt = require('jsonwebtoken');
 module.exports = {
     isAdmin: (req, res, next) => {
-        const user = req.usuario;
-        if(user.isAdmin){
-            next();
+        const token = req.header('authorization').replace('Bearer ', '');
+        const decoded = jwt.verify(token, process.env.SECRET);
+        
+        if (!decoded) {
+            return res.status(400).json({msg: "Usuário não authenticado!"});
         }else{
-            res.status(400).json({mensagem: 'Acesso negado! Voce nao tem permissao para relizar essa acao.'})
+            try{
+                if(decoded.isAdmin){
+                    next();
+                }else{
+                    res.status(400).json({msg :"Não é admin"});
+                }
+            } catch(e){
+                console.log(e);
+                res.status(400).json({msg :"Não é admin"});
+            }
         }
     }
 };

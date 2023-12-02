@@ -9,7 +9,7 @@ module.exports = {
         return user;
     },
 
-    alteraUser: async(id, userAlterado) => {
+    alteraUser: async(userAlterado, id) => {
         return await UserModel.update(userAlterado, {where: {id: id}});
     },
 
@@ -26,14 +26,19 @@ module.exports = {
         return await UserModel.findByPk(id);
     },
 
+    buscaPorDados: async ({ usuario, senha }) => {
+        return await UserModel.findOne({where: { usuario, senha }});
+    },
+
     deleta: async(id) => {
         return await UserModel.destroy({where: {id: id}});
     },
 
     tornarAdmin: async(id) => {
-        const user = UserModel.findByPk(id);
+        const user = await UserModel.findByPk(id);
         user.isAdmin = true;
         await user.save();
+        console.log(user);
         return user;
     }
     

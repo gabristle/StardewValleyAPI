@@ -10,37 +10,37 @@ router.get('/:pagina/:limite', async (req, res) => {
   const pagina = parseInt(req.params.pagina);
   const limite = parseInt(req.params.limite);
   if(!limites.includes(limite)){
-    res.status(400).json({mensagem: "Falha ao listar peixes"});
+    res.status(400).json({mensagem: 'Falha ao listar peixes'});
   }else{
-      const peixes = await PeixeService.listaPeixe(pagina, limite);
-      res.json({ lista: peixes});
+    const peixes = await PeixeService.listaPeixe(pagina, limite);
+    res.status(200).json({lista: peixes});
   }
 });
 
 //listar por local
 router.get('/:local', async (req,res) => {
   try{
-    res.json({lista: await PeixeService.listaPorLocal(req.params.local)});
+    res.status(200).json({lista: await PeixeService.listaPorLocal(req.params.local)});
   } catch(e){
-    res.status(400).json({mensagem: "Falha ao listar peixes do local"});
+    res.status(400).json({mensagem: 'Falha ao listar peixes do local'});
   }
 });
 
 //listar por estacao
 router.get('/:estacao', async (req,res) => {
   try{
-    res.json({lista: await PeixeService.listaPorEstacao(req.params.estacao)});
+    res.status(200).json({lista: await PeixeService.listaPorEstacao(req.params.estacao)});
   }catch(e){
-    res.status(400).json({mensagem: 'Falha ao listar peixes da estacao'});
+    res.status(400).json({mensagem: 'Falha ao listar peixes da estação'});
   }
 });
 
 //listar um peixe por ID
 router.get('/:id', async (req, res) => {
   try{
-    res.json({peixe: await PeixeService.buscaPorID(req.params.id)});
+    res.status(200).json({peixe: await PeixeService.buscaPorID(req.params.id)});
   } catch(e){
-    res.status(400).json({mensagem: "Falha ao listar peixe"});
+    res.status(400).json({mensagem: 'Falha ao listar peixe!'});
   }
 });
 
@@ -48,31 +48,33 @@ router.get('/:id', async (req, res) => {
 router.post('/', Auth.validaAcesso, async(req, res) => {
   try{
     let peixe = await PeixeService.addPeixe(req.body);
-    res.json({peixe: peixe});
+    res.status(200).json({peixe: peixe});
   } catch(e){
-    res.status(400).json({mensagem: "Falha ao salvar o peixe"});
+    res.status(400).json({mensagem: 'Falha ao adicionar o peixe!'});
   }
 });
 
 //alterar um peixe
-router.put('/:id', Auth.validaAcesso, async (req, res) =>{
+router.put('/:id', Auth.validaAcesso, async (req, res) => {
   try{
     let peixe = await PeixeService.alteraPeixe(req.params.id, req.body);
-    res.json({peixe: peixe});
+    res.status(200).json({peixe: peixe});
   } catch(e){
-    res.status(400).json({mensagem: "Falha ao alterar o peixe"});
+    res.status(400).json({mensagem: 'Falha ao alterar o peixe!'});
   }
 });
 
 //excluir um peixe
-router.delete('/:id', Auth.validaAcesso, async(req, res) =>{
-  res.json({peixe: await PeixeService.deleta(req.params.id)});
+router.delete('/:id', Auth.validaAcesso, async(req, res) => {
+  try{
+    res.status(200).json({peixe: await PeixeService.deleta(req.params.id)});
+  }catch(e){
+    res.status(400).json({mensagem: 'Falha ao deletar peixe!'});
+  }
 });
 
 /* GET home page. */
-router.get('/install', async function(req, res, next) {
+router.get('/install', async function(req, res, next){
   await sequelize.sync({force: true});
-  res.json({mensagem: 'Instalado com sucesso!'});
+  res.status(200).json({mensagem: 'Instalado com sucesso!'});
 });
-
-module.exports = router;

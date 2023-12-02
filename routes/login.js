@@ -10,9 +10,9 @@ const Auth = require('../helpers/Auth');
 router.put('/', Auth.validaAcesso, async(req, res) => {
     try{
         let userModificado = await UserService.alteraUser(req.body, req.user.id);
-        return res.json({usuario: await UserService.buscaPorID(req.user.id)});
+        return res.status(200).json({usuario: await UserService.buscaPorID(req.user.id)});
     } catch(e){
-        return res.status(400).json({mensagem: 'Falha ao alterar usuario'});
+        return res.status(400).json({mensagem: 'Falha ao alterar usuario!'});
     }
 });
 
@@ -21,22 +21,22 @@ router.put('/:id', IsAdmin.isAdmin, async(req, res) =>{
     try{
         let user = await UserService.buscaPorID(req.params.id);
         if(user.isAdmin){
-            return res.status(400).json({mensagem: 'Um administrador nao pode alterar dados de outro administrador'});
+            return res.status(400).json({mensagem: 'Um administrador nãoo pode alterar dados de outro administrador!'});
         }else{
             let userModificado = await UserService.alteraUser(req.body, req.params.id);
-            return res.json({usuario: await UserService.buscaPorID(req.params.id)});
+            return res.status(200).json({usuario: await UserService.buscaPorID(req.params.id)});
         }
     }catch(e){
-        return res.status(400).json({mensagem: 'Falha ao alterar o user'});
+        return res.status(400).json({mensagem: 'Falha ao alterar os dados do usuario!'});
     }
 });
 
 //torna um usuário administrador
 router.put('/admin/:id', IsAdmin.isAdmin, async(req, res) => {
     try{
-        return res.json({admin: await UserService.tornarAdmin(req.params.id)});
+        return res.status(200).json({admin: await UserService.tornarAdmin(req.params.id)});
     }catch(e){
-        return res.status(400).json({mensagem: 'Falha ao tornar o usuario administrador'});
+        return res.status(400).json({mensagem: 'Falha ao tornar o usuario administrador!'});
     }
 });
 
@@ -45,9 +45,9 @@ router.post('/registrar', async (req, res) => {
     try{
         const user = await UserService.addUser(req.body);
         console.log(user);
-        return res.status(200).json({mensagem: "Cadastrado", user: user});
+        return res.status(200).json({mensagem: 'Usuario registrado com sucesso! Faça o login para acessar as rotas.', user: user});
     }catch(e){
-        return res.status(400).json({mensagem: "Erro ao cadastrar"});
+        return res.status(400).json({mensagem: 'Erro ao cadastrar usuario!'});
     }
 });
 
@@ -56,18 +56,18 @@ router.post('/', async (req, res) => {
     try{
         const user = await UserService.buscaPorDados({usuario, senha});
         if(!user){
-            return res.status(400).json({msg: 'Usuario nao existe'});
+            return res.status(400).json({mensagem: 'O usuario não existe! Tente novamente.'});
         }else{
             const token = jwt.sign({
                 id: user.id,
                 usuario: user.usuario,
                 isAdmin: user.isAdmin || false
             }, process.env.SECRET);
-            return res.status(200).json({msg:"Autenticacao realizada com sucesso", token});
+            return res.status(200).json({mensagem:'Autenticação realizada com sucesso!', token});
         }
     }catch (e){
         console.log(e);
-        return res.status(500).json({msg: "Token não foi criado"});
+        return res.status(400).json({mensagem: 'Erro! Falha ao criar o Token.'});
     }
 });
 
@@ -75,19 +75,19 @@ router.post('/', async (req, res) => {
 router.delete('/:id', IsAdmin.isAdmin, async (req, res) => {
     let userBusca = await UserService.buscaPorID(req.params.id);
     if (!userBusca) {
-        return res.status(404).json({ mensagem: 'Usuário não encontrado' });
+        return res.status(400).json({mensagem: 'Usuário não encontrado!' });
     }
     if(userBusca.isAdmin){
-        return res.status(400).json({mensagem: 'Um administrador nao pode excluir outro admnistrador'});
+        return res.status(400).json({mensagem: 'Um administrador não pode excluir outro admnistrador!'});
     }else{
         let userExcluido = await UserService.deleta(req.params.id);
-        return res.json({usuario: userExcluido});
+        return res.status(200).json({usuario: userExcluido});
     }
 });
 
 router.get('/install', async function(req, res, next) {
     await sequelize.sync({force: true});
-    return res.json({mensagem: 'Instalado com sucesso!'});
+    return res.status(200).json({mensagem: 'Instalado com sucesso!'});
 });
 
 module.exports = router;

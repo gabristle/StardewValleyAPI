@@ -5,17 +5,17 @@ module.exports = {
         const decoded = jwt.verify(token, process.env.SECRET);
         
         if (!decoded) {
-            return res.status(400).json({msg: "Usuário não authenticado!"});
+            return res.status(400).json({mensagem: "Usuário não autenticado! Token inválido."});
         }else{
             try{
                 if(decoded.isAdmin){
                     next();
                 }else{
-                    res.status(400).json({msg :"Não é admin"});
+                    res.status(400).json({mensagem:'Você não tem permissão para acessar essa rota.'});
                 }
             } catch(e){
                 console.log(e);
-                res.status(400).json({msg :"Não é admin"});
+                res.status(400).json({mensagem:'Você não tem permissão para acessar essa rota.'});
             }
         }
     }

@@ -10,19 +10,19 @@ router.get('/:pagina/:limite', async (req,res) => {
     const pagina = parseInt(req.params.pagina);
     const limite = parseInt(req.params.limite);
     if(!limites.includes(limite)){
-        res.status(400).json({mensagem: 'Falha ao listar estacoes'});
+        res.status(400).json({mensagem: 'Falha ao listar estações! O limite deve ser 5, 10 ou 30.'});
     }else{
         const estacoes = await EstacaoService.listaEstacao(pagina, limite);
-        res.json({lista: estacoes});
+        res.status(200).json({lista: estacoes});
     }
 });
 
 //listar uma estação por ID
 router.get('/:id', async (req, res) => {
     try{
-        res.json({lista: await EstacaoService.buscaPorID(req.params.id)});
+        res.status(200).json({lista: await EstacaoService.buscaPorID(req.params.id)});
     }catch(e){
-        res.status(400).jsson({mensagem: 'Falha ao buscar estacao por ID'});
+        res.status(400).jsson({mensagem: 'Falha ao buscar estação por ID!'});
     }
 });
 
@@ -30,9 +30,9 @@ router.get('/:id', async (req, res) => {
 router.post('/', Auth.validaAcesso, async (req,res) => {
     try{
         let estacao = await EstacaoService.addEstacao(req.body);
-        res.json({estacao: estacao});
+        res.status(200).json({estacao: estacao});
     }catch(e){
-        res.status(400).json({mensagem: 'Falha ao salvar estacao'});
+        res.status(400).json({mensagem: 'Falha ao adicionar estação!'});
     }
 });
 
@@ -40,24 +40,24 @@ router.post('/', Auth.validaAcesso, async (req,res) => {
 router.put('/:id', Auth.validaAcesso, async (req, res) => {
     try{
         let estacao = await EstacaoService.alteraEstacao(req.params.id, req.body);
-        res.json({estacao: estacao});
+        res.status(200).json({estacao: estacao});
     }catch(e){
-        res.status(400).json({mensagem: 'Falha a alterar estacao'});
+        res.status(400).json({mensagem: 'Falha ao alterar estação!'});
     }
 });
 
 //excluir uma estação
 router.delete('/:id', Auth.validaAcesso, async (req, res) => {
     try{
-        res.json({estacao: await EstacaoService.deleta(req.params.id)});
+        res.status(200).json({estacao: await EstacaoService.deleta(req.params.id)});
     }catch(e){
-        res.status(400).json({mensagem: 'Falha ao deletar estacao'});
+        res.status(400).json({mensagem: 'Falha ao deletar estação!'});
     }
 });
 
 router.get('/install', async function(req, res, next) {
     await sequelize.sync({force: true});
-    res.json({mensagem: 'Instalado com sucesso!'});
+    res.status(200).json({mensagem: 'Instalado com sucesso!'});
 });
 
 module.exports = router;

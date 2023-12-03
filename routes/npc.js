@@ -4,6 +4,7 @@ const {sequelize} = require('../model/bd');
 const NPCService = require('../model/NPC');
 const limites = [5, 10, 30];
 const Auth = require('../helpers/Auth');
+const Validadores = require('../helpers/Validadores');
 
 //listar os NPCS
 router.get('/:pagina/:limite', async (req, res) => {
@@ -27,7 +28,7 @@ router.get('/:id', async (req, res) => {
 });
 
 //inserir novo NPC
-router.post('/', Auth.validaAcesso, async(req, res) => {
+router.post('/', Auth.validaAcesso, Validadores.validaNPC, async(req, res) => {
   try{
     let NPC = await NPCService.addNPC(req.body);
     res.status(200).json({NPC: NPC});
@@ -37,7 +38,7 @@ router.post('/', Auth.validaAcesso, async(req, res) => {
 });
 
 //alterar um NPC
-router.put('/:id', Auth.validaAcesso, async (req, res) =>{
+router.put('/:id', Auth.validaAcesso, Validadores.validaNPC, async (req, res) =>{
   try{
     let NPC = await NPCService.alteraNPC(req.params.id, req.body);
     res.status(200).json({NPC: NPC});

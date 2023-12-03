@@ -28,7 +28,7 @@ router.get('/:id', async (req, res) => {
 });
 
 //inserir nova estação
-router.post('/', Auth.validaAcesso, async (req,res) => {
+router.post('/', Auth.validaAcesso, Validadores.validaEstacao, async (req,res) => {
     try{
         let estacao = await EstacaoService.addEstacao(req.body);
         res.status(200).json({estacao: estacao});
@@ -38,7 +38,7 @@ router.post('/', Auth.validaAcesso, async (req,res) => {
 });
 
 //alterar uma estação
-router.put('/:id', Auth.validaAcesso, async (req, res) => {
+router.put('/:id', Auth.validaAcesso, Validadores.validaEstacao, async (req, res) => {
     try{
         let estacao = await EstacaoService.alteraEstacao(req.params.id, req.body);
         res.status(200).json({estacao: estacao});

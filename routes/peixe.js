@@ -4,6 +4,7 @@ const {sequelize} = require('../model/bd');
 const PeixeService = require('../model/Peixe');
 const limites = [5, 10, 30];
 const Auth = require('../helpers/Auth');
+const Validadores = require('../helpers/Validadores');
 
 //listar os peixes
 router.get('/:pagina/:limite', async (req, res) => {
@@ -45,7 +46,7 @@ router.get('/:id', async (req, res) => {
 });
 
 //inserir novo peixe
-router.post('/', Auth.validaAcesso, async(req, res) => {
+router.post('/', Auth.validaAcesso, Validadores.validaPeixe, async(req, res) => {
   try{
     let peixe = await PeixeService.addPeixe(req.body);
     res.status(200).json({peixe: peixe});
@@ -55,7 +56,7 @@ router.post('/', Auth.validaAcesso, async(req, res) => {
 });
 
 //alterar um peixe
-router.put('/:id', Auth.validaAcesso, async (req, res) => {
+router.put('/:id', Auth.validaAcesso, Validadores.validaPeixe, async (req, res) => {
   try{
     let peixe = await PeixeService.alteraPeixe(req.params.id, req.body);
     res.status(200).json({peixe: peixe});

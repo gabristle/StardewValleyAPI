@@ -78,3 +78,5 @@ router.get('/install', async function(req, res, next){
   await sequelize.sync({force: true});
   res.status(200).json({mensagem: 'Instalado com sucesso!'});
 });
+
+module.exports = router;

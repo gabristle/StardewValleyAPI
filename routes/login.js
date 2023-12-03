@@ -5,7 +5,7 @@ const {sequelize} = require('../model/bd');
 const UserService = require('../model/Usuario');
 const IsAdmin = require('../helpers/IsAdmin');
 const Auth = require('../helpers/Auth');
-const Validador = require('../helpers/Validadores');
+const Validadores = require('../helpers/Validadores');
 
 //altera os dados do usuario
 router.put('/', Auth.validaAcesso, async(req, res) => {
@@ -42,7 +42,7 @@ router.put('/admin/:id', IsAdmin.isAdmin, async(req, res) => {
 });
 
 //cria um usuario
-router.post('/registrar', Validador.validaCadastro, async (req, res) => {
+router.post('/registrar', Validadores.validaCadastro, async (req, res) => {
     try{
         const user = await UserService.addUser(req.body);
         console.log(user);

@@ -22,7 +22,7 @@ router.get('/:id', async (req, res) => {
     try{
         res.status(200).json({lista: await EstacaoService.buscaPorID(req.params.id)});
     }catch(e){
-        res.status(400).jsson({mensagem: 'Falha ao buscar estação por ID!'});
+        res.status(400).json({mensagem: 'Falha ao buscar estação por ID!'});
     }
 });
 

@@ -30,6 +30,10 @@ module.exports = {
         return await UserModel.findOne({where: { usuario, senha }});
     },
 
+    buscaPorEmail: async ({ email }) => {
+        return await UserModel.findOne({where: { email }});
+    },
+
     deleta: async(id) => {
         return await UserModel.destroy({where: {id: id}});
     },

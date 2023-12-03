@@ -34,7 +34,11 @@ const EstacaoModel = sequelize.define('Estacao', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    eventos: {
+    evento: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    minigame: {
         type: DataTypes.STRING,
         allowNull: false
     }
@@ -49,6 +53,10 @@ const NPCModel = sequelize.define('NPC', {
     nome: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    diaAniversario: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
 });
 
@@ -60,6 +68,14 @@ const UserModel = sequelize.define('User', {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
+    },
+    nome: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
     usuario: {
         type: DataTypes.STRING,

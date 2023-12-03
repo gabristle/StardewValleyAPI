@@ -7,14 +7,14 @@ const Auth = require('../helpers/Auth');
 
 //listar os NPCS
 router.get('/:pagina/:limite', async (req, res) => {
-    const pagina = parseInt(req.params.pagina);
-    const limite = parseInt(req.params.limite);
-    if(!limites.includes(limite)){
-      res.status(400).json({mensagem: 'Falha ao listar NPCs! O limite deve ser 5, 10 ou 30'});
-    }else{
-      const NPCs = await NPCService.listaNPC(pagina, limite);
-      res.status(200).json({lista: NPCs});
-    }
+  const pagina = parseInt(req.params.pagina);
+  const limite = parseInt(req.params.limite);
+  if(!limites.includes(limite)){
+    res.status(400).json({mensagem: 'Falha ao listar os NPCs! O limite deve ser 5, 10 ou 30'});
+  }else{
+    const NPCs = await NPCService.listaNPC(pagina, limite);
+    res.status(200).json({lista: NPCs});
+  }
 });
 
 //listar um NPC por ID
@@ -22,7 +22,7 @@ router.get('/:id', async (req, res) => {
   try{
     res.status(200).json({NPC: await NPCService.buscaPorID(req.params.id)});
     } catch(e){
-    res.status(400).json({mensagem: 'Falha ao listar NPC!'});
+    res.status(400).json({mensagem: 'Falha ao listar o NPC!'});
   }
 });
 
@@ -51,7 +51,7 @@ router.delete('/:id', Auth.validaAcesso, async(req, res) =>{
   try{
     res.status(200).json({NPC: await NPCService.deleta(req.params.id)});
   }catch(e){
-    res.status(400).json({mensagem: 'Falha ao excluir NPC'});
+    res.status(400).json({mensagem: 'Falha ao excluir o NPC'});
   }
 });
 

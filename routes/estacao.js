@@ -4,6 +4,7 @@ const {sequelize} = require('../model/bd');
 const EstacaoService = require('../model/Estacao');
 const limites = [5, 10, 30];
 const Auth = require('../helpers/Auth');
+const Validadores = require('../helpers/Validadores');
 
 //listar estações
 router.get('/:pagina/:limite', async (req,res) => {

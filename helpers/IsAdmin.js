@@ -9,6 +9,7 @@ module.exports = {
         }else{
             try{
                 if(decoded.isAdmin){
+                    req.user = decoded;
                     next();
                 }else{
                     res.status(400).json({mensagem:'Você não tem permissão para acessar essa rota.'});

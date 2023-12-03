@@ -8,24 +8,36 @@ const Auth = require('../helpers/Auth');
 const Validadores = require('../helpers/Validadores');
 
 //altera os dados do usuario
-router.put('/', Auth.validaAcesso, async(req, res) => {
+router.put('/', Auth.validaAcesso, Validadores.validaAlteracao, async(req, res) => {
     try{
-        let userModificado = await UserService.alteraUser(req.body, req.user.id);
-        return res.status(200).json({usuario: await UserService.buscaPorID(req.user.id)});
+        await UserService.alteraUser(req.body, req.user.id);
+        const novoToken = jwt.sign({
+            id: req.user.id,
+            email: req.user.email,
+            usuario: req.user.usuario,
+            isAdmin: req.user.isAdmin || false
+        }, process.env.SECRET);
+        return res.status(200).json({mensagem: 'Alteração feita com sucesso! Acesse esse é seu novo token: ', token: novoToken});
     } catch(e){
         return res.status(400).json({mensagem: 'Falha ao alterar usuario!'});
     }
 });
 
 //administrador altera dados dos usuários não administradores
-router.put('/:id', IsAdmin.isAdmin, async(req, res) =>{
+router.put('/:id', IsAdmin.isAdmin, Validadores.validaAlteracao, async(req, res) =>{
     try{
         let user = await UserService.buscaPorID(req.params.id);
         if(user.isAdmin){
             return res.status(400).json({mensagem: 'Um administrador nãoo pode alterar dados de outro administrador!'});
         }else{
-            let userModificado = await UserService.alteraUser(req.body, req.params.id);
-            return res.status(200).json({usuario: await UserService.buscaPorID(req.params.id)});
+            await UserService.alteraUser(req.body, req.params.id);
+            const novoToken = jwt.sign({
+                id: user.id,
+                email: user.email,
+                usuario: user.usuario,
+                isAdmin: user.isAdmin || false
+            }, process.env.SECRET);
+            return res.status(200).json({mensagem: 'Alteração feita com sucesso! Informe ao usuário seu novo token: ', token: novoToken});
         }
     }catch(e){
         return res.status(400).json({mensagem: 'Falha ao alterar os dados do usuario!'});
@@ -61,6 +73,7 @@ router.post('/', async (req, res) => {
         }else{
             const token = jwt.sign({
                 id: user.id,
+                email: user.email,
                 usuario: user.usuario,
                 isAdmin: user.isAdmin || false
             }, process.env.SECRET);

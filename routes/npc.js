@@ -26,7 +26,7 @@ router.get('/:estacao/:pagina/:limite', async (req, res) => {
   if(!limites.includes(limite)){
     res.status(400).json({mensagem: 'Falha ao listar os NPCs! O limite deve ser 5, 10 ou 30'});
   }else{
-    const NPCs = await NPCService.listaEstacao(estacao, pagina, limite);
+    const NPCs = await NPCService.listaPorEstacao(estacao, pagina, limite);
     res.status(200).json({lista: NPCs});
   }
 });

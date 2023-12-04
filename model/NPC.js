@@ -22,7 +22,7 @@ module.exports = {
         return await NPCModel.findByPk(id);
     },
 
-    listaNPC: async(estacao, pagina, limite) => {
+    listaPorEstacao: async(estacao, pagina, limite) => {
         const offset = (pagina - 1) * limite;
         const npcs = await PeixeModel.findAll({
             where: {EstacaoId: estacao},

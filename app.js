@@ -9,6 +9,7 @@ var peixeRouter = require('./routes/peixe');
 var loginRouter = require('./routes/login');
 var estacaoRouter = require('./routes/estacao');
 var NPCRouter = require('./routes/npc');
+var CompRouter = require('./routes/competicao');
 
 var app = express();
 
@@ -22,6 +23,7 @@ app.use('/peixe', peixeRouter);
 app.use('/login', loginRouter);
 app.use('/estacao', estacaoRouter);
 app.use('/npc', NPCRouter);
+app.use('/comp', CompRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

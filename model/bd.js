@@ -57,6 +57,10 @@ const NPCModel = sequelize.define('NPC', {
     diaAniversario: {
         type: DataTypes.INTEGER,
         allowNull: false
+    },
+    vencedor: {
+        type: DataTypes.INTEGER,
+        allowNull: true
     }
 });
 
@@ -91,10 +95,44 @@ const UserModel = sequelize.define('User', {
     }
 });
 
+const CompeticaoModel = sequelize.define('Competicao', {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    dia: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    participantes: {
+        type: DataTypes.JSON,
+        allowNull: false
+    },
+    vencedor: {
+        type: DataTypes.JSON,
+        allowNull: true
+    }
+});
+
+const CompetidorPeixe = sequelize.define('CompetidorPeixe', {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    }
+});
+
+CompeticaoModel.belongsTo(EstacaoModel);
+NPCModel.belongsToMany(PeixeModel, { through: CompetidorPeixe });
+PeixeModel.belongsToMany(NPCModel, { through: CompetidorPeixe });
+
 module.exports = {
     sequelize: sequelize,
     PeixeModel: PeixeModel,
     UserModel: UserModel,
     EstacaoModel: EstacaoModel,
-    NPCModel: NPCModel
+    NPCModel: NPCModel,
+    CompeticaoModel: CompeticaoModel,
+    CompetidorPeixe: CompetidorPeixe
 };

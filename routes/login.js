@@ -64,6 +64,7 @@ router.post('/registrar', Validadores.validaCadastro, async (req, res) => {
     }
 });
 
+//fazer login e receber o token
 router.post('/', async (req, res) => {
     const {usuario, senha} = req.body;
     try{
@@ -80,7 +81,6 @@ router.post('/', async (req, res) => {
             return res.status(200).json({mensagem:'Autenticação realizada com sucesso!', token});
         }
     }catch (e){
-        console.log(e);
         return res.status(400).json({mensagem: 'Erro! Falha ao criar o Token.'});
     }
 });
@@ -97,11 +97,6 @@ router.delete('/:id', IsAdmin.isAdmin, async (req, res) => {
         let userExcluido = await UserService.deleta(req.params.id);
         return res.status(200).json({usuario: userExcluido});
     }
-});
-
-router.get('/install', async function(req, res, next) {
-    await sequelize.sync({force: true});
-    return res.status(200).json({mensagem: 'Instalado com sucesso!'});
 });
 
 module.exports = router;

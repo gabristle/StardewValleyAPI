@@ -126,6 +126,7 @@ const CompetidorPeixe = sequelize.define('CompetidorPeixe', {
 CompeticaoModel.belongsTo(EstacaoModel);
 NPCModel.belongsToMany(PeixeModel, { through: CompetidorPeixe });
 PeixeModel.belongsToMany(NPCModel, { through: CompetidorPeixe });
+CompetidorPeixe.belongsTo(CompeticaoModel);
 
 module.exports = {
     sequelize: sequelize,

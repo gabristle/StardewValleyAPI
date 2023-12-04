@@ -6,7 +6,7 @@ module.exports = {
         return await CompeticaoModel.create(compData);
     },
 
-    addCompetidor: async(npc, peixes) => {
+    addCompetidor: async(compData) => {
         return await CompetidorPeixe.create(compData);
     },
 
@@ -18,6 +18,11 @@ module.exports = {
             offset: offset
         });
         return competidores;
+    },
+
+    addPesca: async(npc, peixes) => {
+        const competidor = await CompetidorPeixe.findOne({where: {NpcId: npc}});
+        return await competidor.update({ peixes: peixes });
     },
 
     excluiCompeticao: async(id) => {

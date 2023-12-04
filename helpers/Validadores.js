@@ -1,5 +1,7 @@
 const UserService = require('../model/Usuario');
 const EstacaoService = require('../model/Estacao');
+const NPCService = require('../model/NPC');
+const PeixeService = require('../model/Peixe');
 
 module.exports = {
     validaCadastro: async (req, res, next) => {
@@ -113,6 +115,10 @@ module.exports = {
         if(!nome){
             res.status(400).json({mensagem: 'A estação precisa ter um nome! Digite um nome.'});
         }
+        let buscaNome = EstacaoService.buscaNome(nome);
+        if(buscaNome){
+            res.status(400).json({mensagem: 'Uma estação com esse nome já existe! Digite outro.'});
+        }
         if(nome.length <= 2 || nome.length >= 16){
             res.status(400).json({mensagem: 'Tamanho do nome inválido! Digite um nome entre 3 e 15 caracteres.'});
         }
@@ -135,6 +141,10 @@ module.exports = {
         const {nome, local, xp, EstacaoId} = req.body;
         if(!nome){
             res.status(400).json({mensagem: 'O peixe precisa ter um nome! Digite um nome.'});
+        }
+        let buscaNome = PeixeService.buscaNome(nome);
+        if(buscaNome){
+            res.status(400).json({mensagem: 'Um peixe com esse nome já existe! Digite outro.'});
         }
         if(nome.length <= 2 || nome.length >= 16){
             res.status(400).json({mensagem: 'Tamanho do nome inválido! Digite um nome entre 3 e 15 caracteres.'});
@@ -165,6 +175,10 @@ module.exports = {
         const {nome, diaAniversario, EstacaoId} = req.body;
         if(!nome){
             res.status(400).json({mensagem: 'O NPC precisa ter um nome! Digite um nome.'});
+        }
+        let buscaNome = NPCService.buscaNome(nome);
+        if(buscaNome){
+            res.status(400).json({mensagem: 'Um NPC com esse nome já existe! Digite outro.'});
         }
         if(nome.length <= 2 || nome.length >= 21){
             res.status(400).json({mensagem: 'Tamanho do nome inválido! Digite um nome entre 3 e 20 caracteres.'});

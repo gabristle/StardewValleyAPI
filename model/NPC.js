@@ -22,6 +22,10 @@ module.exports = {
         return await NPCModel.findByPk(id);
     },
 
+    buscaNome: async(nome) => {
+        return await NPCModel.findOne({where: {nome: nome}});
+    },
+
     deleta: async(id) => {
         return await NPCModel.destroy({where: {id: id}});
     }

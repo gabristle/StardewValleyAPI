@@ -30,6 +30,10 @@ module.exports = {
         return await PeixeModel.findByPk(id);
     },
 
+    buscaNome: async (nome) => {
+        return await PeixeModel.findOne({where: {nome: nome}});
+    },
+
     deleta: async(id) => {
         return await PeixeModel.destroy({where: {id: id}});
     }

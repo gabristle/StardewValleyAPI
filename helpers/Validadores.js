@@ -113,60 +113,52 @@ module.exports = {
     validaEstacao: (req, res, next) => {
         const {nome, evento, minigame} = req.body;
         if(!nome){
-            res.status(400).json({mensagem: 'A estação precisa ter um nome! Digite um nome.'});
-        }
-        let buscaNome = EstacaoService.buscaNome(nome);
-        if(buscaNome){
-            res.status(400).json({mensagem: 'Uma estação com esse nome já existe! Digite outro.'});
+            return res.status(400).json({mensagem: 'A estação precisa ter um nome! Digite um nome.'});
         }
         if(nome.length <= 2 || nome.length >= 16){
-            res.status(400).json({mensagem: 'Tamanho do nome inválido! Digite um nome entre 3 e 15 caracteres.'});
+            return res.status(400).json({mensagem: 'Tamanho do nome inválido! Digite um nome entre 3 e 15 caracteres.'});
         }
         if(!evento){
-            res.status(400).json({mensagem: 'A estação precisa ter um evento! Digite um evento.'});
+            return res.status(400).json({mensagem: 'A estação precisa ter um evento! Digite um evento.'});
         }
         if(evento.length <= 4 || evento.length >= 26){
-            res.status(400).json({mensagem: 'Tamanho do evento inválido! Digite um evento entre 5 e 25 caracteres.'});
+            return res.status(400).json({mensagem: 'Tamanho do evento inválido! Digite um evento entre 5 e 25 caracteres.'});
         }
         if(!minigame){
-            res.status(400).json({mensagem: 'A estação precisa ter um minigame! Digite um minigame.'});
+            return res.status(400).json({mensagem: 'A estação precisa ter um minigame! Digite um minigame.'});
         }
         if(minigame.length <= 4 || minigame.length >= 26){
-            res.status(400).json({mensagem: 'Tamanho do minigame inválido! Digite um minigame entre 5 e 25 caracteres.'});
+            return res.status(400).json({mensagem: 'Tamanho do minigame inválido! Digite um minigame entre 5 e 25 caracteres.'});
         }
         next();
     },
 
     validaPeixe: (req, res, next) => {
-        const {nome, local, xp, EstacaoId} = req.body;
+        const {nome, local, xp, estacao} = req.body;
         if(!nome){
-            res.status(400).json({mensagem: 'O peixe precisa ter um nome! Digite um nome.'});
-        }
-        let buscaNome = PeixeService.buscaNome(nome);
-        if(buscaNome){
-            res.status(400).json({mensagem: 'Um peixe com esse nome já existe! Digite outro.'});
+            return res.status(400).json({mensagem: 'O peixe precisa ter um nome! Digite um nome.'});
         }
         if(nome.length <= 2 || nome.length >= 16){
-            res.status(400).json({mensagem: 'Tamanho do nome inválido! Digite um nome entre 3 e 15 caracteres.'});
+            return res.status(400).json({mensagem: 'Tamanho do nome inválido! Digite um nome entre 3 e 15 caracteres.'});
         }
         if(!local){
-            res.status(400).json({mensagem: 'O peixe precisa ter um local! Digite um local.'});
+            return res.status(400).json({mensagem: 'O peixe precisa ter um local! Digite um local.'});
         }
         if(local.length <= 4 || local.length >= 26){
-            res.status(400).json({mensagem: 'Tamanho do local inválido! Digite um local entre 5 e 25 caracteres.'});
+            return res.status(400).json({mensagem: 'Tamanho do local inválido! Digite um local entre 5 e 25 caracteres.'});
         }
         if(!xp){
-            res.status(400).json({mensagem: 'O peixe precisa ter xp! Digite uma quantidade de xp.'});
+            return res.status(400).json({mensagem: 'O peixe precisa ter xp! Digite uma quantidade de xp.'});
         }
         if(xp <= 0 || xp >= 101){
-            res.status(400).json({mensagem: 'Quantidade de xp inválida! Digite uma quantidade de xp entre 1 e 100 caracteres.'});
+            return res.status(400).json({mensagem: 'Quantidade de xp inválida! Digite uma quantidade de xp entre 1 e 100 caracteres.'});
         }
-        if(!EstacaoId){
-            res.status(400).json({mensagem: 'É necessário que o peixe faça parte de uma estação! Digite um id de estação válido.'});
-        }
-        const estacao = EstacaoService.buscaPorID(EstacaoId);
         if(!estacao){
-            res.status(400).json({mensagem: 'ID da estação inválida! Digite um ID válido.'});
+            return res.status(400).json({mensagem: 'É necessário que o peixe faça parte de uma estação! Digite um id de estação válido.'});
+        }
+        const estacaoId = EstacaoService.buscaPorID(estacao);
+        if(!estacaoId){
+            return res.status(400).json({mensagem: 'ID da estação inválida! Digite um ID válido.'});
         }
         next();
     },
@@ -174,27 +166,23 @@ module.exports = {
     validaNPC: (req, res, next) => {
         const {nome, diaAniversario, EstacaoId} = req.body;
         if(!nome){
-            res.status(400).json({mensagem: 'O NPC precisa ter um nome! Digite um nome.'});
-        }
-        let buscaNome = NPCService.buscaNome(nome);
-        if(buscaNome){
-            res.status(400).json({mensagem: 'Um NPC com esse nome já existe! Digite outro.'});
+            return res.status(400).json({mensagem: 'O NPC precisa ter um nome! Digite um nome.'});
         }
         if(nome.length <= 2 || nome.length >= 21){
-            res.status(400).json({mensagem: 'Tamanho do nome inválido! Digite um nome entre 3 e 20 caracteres.'});
+            return res.status(400).json({mensagem: 'Tamanho do nome inválido! Digite um nome entre 3 e 20 caracteres.'});
         }
         if(!diaAniversario){
-            res.status(400).json({mensagem: 'O NPC precisa ter um dia de aniversario! Digite um dia válido.'});
+            return res.status(400).json({mensagem: 'O NPC precisa ter um dia de aniversario! Digite um dia válido.'});
         }
         if(diaAniversario <= 0 || diaAniversario >= 29){
-            res.statis(400).json({mensagem: 'O dia de aniversário digitado é inválido! Digite um dia entre 1 e 28'});
+            return res.status(400).json({mensagem: 'O dia de aniversário digitado é inválido! Digite um dia entre 1 e 28'});
         }
         if(!EstacaoId){
-            res.status(400).json({mensagem: 'É necessário que o NPC faça aniversário em uma estação! Digite um id de estação válido.'});
+            return res.status(400).json({mensagem: 'É necessário que o NPC faça aniversário em uma estação! Digite um id de estação válido.'});
         }
         const estacao = EstacaoService.buscaPorID(EstacaoId);
         if(!estacao){
-            res.status(400).json({mensagem: 'ID da estação inválida! Digite um ID válido.'});
+            return res.status(400).json({mensagem: 'ID da estação inválida! Digite um ID válido.'});
         }
         next();
     }

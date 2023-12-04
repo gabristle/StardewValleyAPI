@@ -22,6 +22,16 @@ module.exports = {
         return await NPCModel.findByPk(id);
     },
 
+    listaNPC: async(estacao, pagina, limite) => {
+        const offset = (pagina - 1) * limite;
+        const npcs = await PeixeModel.findAll({
+            where: {EstacaoId: estacao},
+            limit: limite,
+            offset: offset
+        });
+        return npcs;
+    },
+
     buscaNome: async(nome) => {
         return await NPCModel.findOne({where: {nome: nome}});
     },

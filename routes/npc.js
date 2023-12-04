@@ -18,6 +18,19 @@ router.get('/:pagina/:limite', async (req, res) => {
   }
 });
 
+//listar os NPCS por estação
+router.get('/:estacao/:pagina/:limite', async (req, res) => {
+  const pagina = parseInt(req.params.pagina);
+  const limite = parseInt(req.params.limite);
+  const estacao = parseInt(req.params.estacao);
+  if(!limites.includes(limite)){
+    res.status(400).json({mensagem: 'Falha ao listar os NPCs! O limite deve ser 5, 10 ou 30'});
+  }else{
+    const NPCs = await NPCService.listaEstacao(estacao, pagina, limite);
+    res.status(200).json({lista: NPCs});
+  }
+});
+
 //listar um NPC por ID
 router.get('/:id', async (req, res) => {
   try{

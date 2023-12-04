@@ -18,12 +18,14 @@ module.exports = {
         return peixes;
     },
 
-    listaPorLocal: async(local) => {
-        return await PeixeModel.findAll({where: {local: local}});
-    },
-
-    listaPorEstacao: async(estacao) => {
-        return await PeixeModel.findAll({where: {estacaoId: estacao}});
+    listaPorEstacao: async(estacao, pagina, limite) => {
+        const offset = (pagina - 1) * limite;
+        const peixes = await PeixeModel.findAll({
+            where: {EstacaoId: estacao},
+            limit: limite,
+            offset: offset
+        });
+        return peixes;
     },
 
     buscaPorID: async (id) => {

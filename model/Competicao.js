@@ -20,8 +20,12 @@ module.exports = {
         return competidores;
     },
 
+    buscaCompeticao: async(id) => {
+        return await CompeticaoModel.findByPk(id);
+    },
+
     addPesca: async(npc, peixes) => {
-        const competidor = await CompetidorPeixe.findOne({where: {NpcId: npc}});
+        const competidor = await CompetidorPeixe.findOne({where: {NPCId: npc}});
         return await competidor.update({ peixes: peixes });
     },
 

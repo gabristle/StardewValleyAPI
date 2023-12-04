@@ -105,10 +105,6 @@ const CompeticaoModel = sequelize.define('Competicao', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    participantes: {
-        type: DataTypes.JSON,
-        allowNull: false
-    },
     vencedor: {
         type: DataTypes.JSON,
         allowNull: true

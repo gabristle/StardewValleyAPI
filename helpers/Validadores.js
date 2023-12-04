@@ -2,6 +2,7 @@ const UserService = require('../model/Usuario');
 const EstacaoService = require('../model/Estacao');
 const NPCService = require('../model/NPC');
 const PeixeService = require('../model/Peixe');
+const CompeticaoService = require('../model/Competicao');
 
 module.exports = {
     validaCadastro: async (req, res, next) => {
@@ -183,6 +184,47 @@ module.exports = {
         const estacao = EstacaoService.buscaPorID(EstacaoId);
         if(!estacao){
             return res.status(400).json({mensagem: 'ID da estação inválida! Digite um ID válido.'});
+        }
+        next();
+    },
+
+    validaCompeticao: (req, res, next) => {
+        const {dia, EstacaoId} = req.body;
+        if(!dia){
+            return res.status(400).json({mensagem: 'A competição precisa de uma data! Digite um dia válido.'});
+        }
+        if(dia <= 0 || dia >= 29){
+            return res.status(400).json({mensagem: 'A competição precisa de uma data válida! Digite um dia entre 1 e 28.'});
+        }
+        if(!EstacaoId){
+            return res.status(400).json({mensagem: 'A competição precisa acontecer em uma estação! Digite um ID de estação válido.'});
+        }
+        const estacao = EstacaoService.buscaPorID(EstacaoId);
+        if(!estacao){
+            return res.status(400).json({mensagem: 'A estação informada é inválida! Digite um ID de estação válido.'});
+        }
+        next();
+    },
+
+    validaCompetidor: (req, res, next) => {
+        const {NPCId, PeixeId, CompeticaoId} = req.body;
+        if(!NPCId){
+            return res.status(400).json({mensagem: 'O NPC informado é inválido, portanto não pode ser um competidor! Digite um ID de NPC válido.'});
+        }
+        const NPCexistente = NPCService.buscaPorID(NPCId);
+        if(!NPCexistente){
+            return res.status(400).json({mensagem: 'ID no NPC é inválido! Tente novamente.'});
+        }
+        const peixesExistentes = PeixeService.listaPeixe(PeixeId);
+        if(peixesExistentes.length != PeixeId.length){
+            return res.status(400).json({mensagem: 'Um ou mais IDs são inválidos! Tente novamente.'});
+        }
+        if(!CompeticaoId){
+            return res.status(400).json({mensagem: 'A competicao precisa ser informada para competir! Digite um ID de competição válido.'});
+        }
+        const competicaoExistente = CompeticaoService.buscaCompeticao(CompeticaoId);
+        if(!competicaoExistente){
+            return res.status(400).json({mensagem: 'O ID da competição informado é inválido! Tente novamente.'});
         }
         next();
     }

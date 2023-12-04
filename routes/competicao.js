@@ -20,7 +20,7 @@ router.get('/participantes/:id/:pagina/:limite', async (req,res) => {
 });
 
 //adiciona uma pesca
-router.put('/pesca/:id', Auth.validaAcesso,async(req, res) => {
+router.put('/pesca/:id', Auth.validaAcesso, Validadores.validaCompetidor, async(req, res) => {
     try{
         let competidor = await CompeticaoService.addPesca(req.params.id, req.body);
         return res.status(200).json({competidor: competidor});
@@ -30,7 +30,7 @@ router.put('/pesca/:id', Auth.validaAcesso,async(req, res) => {
 });
 
 //adiciona uma competição
-router.post('/competicao', Auth.validaAcesso, async(req, res) => {
+router.post('/competicao', Auth.validaAcesso, Validadores.validaCompeticao, async(req, res) => {
     try{
         let competicao = await CompeticaoService.addCompeticao(req.body);
         return res.status(200).json({competicao: competicao});
@@ -39,8 +39,8 @@ router.post('/competicao', Auth.validaAcesso, async(req, res) => {
     }
 });
 
-//adiciona um participante
-router.post('/participante', Auth.validaAcesso, async(req, res) => {
+//adiciona um competidor
+router.post('/competidor', Auth.validaAcesso, Validadores.validaCompetidor,async(req, res) => {
     try{
         let participante = await CompeticaoService.addCompetidor(req.body);
         return res.status(200).json({participante: participante});

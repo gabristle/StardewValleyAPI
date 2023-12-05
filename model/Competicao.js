@@ -11,11 +11,19 @@ module.exports = {
     },
 
     listaCompetidores: async(id, pagina, limite) => {
-        const offset = (pagina-1) * limite;
-        const competidores = await CompetidorPeixe.findAll({
-            where: {Competicaoid: id},
-            limit: limite,
-            offset: offset
+        const competidores = await CompeticaoModel.findOne({
+            where: { id: id },
+            include: [
+              {
+                model: CompetidorPeixe,
+                include: [
+                  { model: NPCModel },
+                  { model: PeixeModel }
+                ]
+              }
+            ],
+            offset: (pagina - 1) * limite,
+            limit: limite
         });
         return competidores;
     },

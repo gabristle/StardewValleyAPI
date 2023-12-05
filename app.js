@@ -10,6 +10,8 @@ var loginRouter = require('./routes/login');
 var estacaoRouter = require('./routes/estacao');
 var NPCRouter = require('./routes/npc');
 var CompRouter = require('./routes/competicao');
+var SwaggerUI = require('swagger-ui-express');
+var SwaggerFile = require('./swagger_doc.json');
 
 var app = express();
 
@@ -24,6 +26,7 @@ app.use('/login', loginRouter);
 app.use('/estacao', estacaoRouter);
 app.use('/npc', NPCRouter);
 app.use('/comp', CompRouter);
+app.use('/api-docs', SwaggerUI.serve, SwaggerUI.setup(SwaggerFile));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -18,6 +18,10 @@ module.exports = {
         return peixes;
     },
 
+    peixesExistentes: async()=>{
+        return await PeixeModel.findAll();
+    },
+
     listaPorEstacao: async(estacao, pagina, limite) => {
         const offset = (pagina - 1) * limite;
         const peixes = await PeixeModel.findAll({

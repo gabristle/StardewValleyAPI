@@ -135,7 +135,7 @@ module.exports = {
     },
 
     validaPeixe: (req, res, next) => {
-        const {nome, local, xp, estacao} = req.body;
+        const {nome, local, xp, EstacaoId} = req.body;
         if(!nome){
             return res.status(400).json({mensagem: 'O peixe precisa ter um nome! Digite um nome.'});
         }
@@ -154,11 +154,11 @@ module.exports = {
         if(xp <= 0 || xp >= 101){
             return res.status(400).json({mensagem: 'Quantidade de xp inválida! Digite uma quantidade de xp entre 1 e 100 caracteres.'});
         }
-        if(!estacao){
+        if(!EstacaoId){
             return res.status(400).json({mensagem: 'É necessário que o peixe faça parte de uma estação! Digite um id de estação válido.'});
         }
-        const estacaoId = EstacaoService.buscaPorID(estacao);
-        if(!estacaoId){
+        const estacao = EstacaoService.buscaPorID(EstacaoId);
+        if(!estacao){
             return res.status(400).json({mensagem: 'ID da estação inválida! Digite um ID válido.'});
         }
         next();
@@ -207,7 +207,7 @@ module.exports = {
     },
 
     validaCompetidor: (req, res, next) => {
-        const {NPCId, PeixeId, CompeticaoId} = req.body;
+        const {NPCId, PeixeIds, CompeticaoId} = req.body;
         if(!NPCId){
             return res.status(400).json({mensagem: 'O NPC informado é inválido, portanto não pode ser um competidor! Digite um ID de NPC válido.'});
         }
@@ -215,8 +215,8 @@ module.exports = {
         if(!NPCexistente){
             return res.status(400).json({mensagem: 'ID no NPC é inválido! Tente novamente.'});
         }
-        const peixesExistentes = PeixeService.listaPeixe(PeixeId);
-        if(peixesExistentes.length != PeixeId.length){
+        const peixesExistentes = PeixeService.peixesExistentes();
+        if(peixesExistentes.length != PeixeIds.length){
             return res.status(400).json({mensagem: 'Um ou mais IDs são inválidos! Tente novamente.'});
         }
         if(!CompeticaoId){

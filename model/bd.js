@@ -4,26 +4,6 @@ const sequelize = new Sequelize({
     storage: './database.sqlite'
 });//obj de conexao
 
-const PeixeModel = sequelize.define('Peixe', {
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
-    },
-    nome: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    local: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    xp: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    }
-});
-
 const EstacaoModel = sequelize.define('Estacao', {
     id: {
         type: DataTypes.INTEGER,
@@ -40,6 +20,26 @@ const EstacaoModel = sequelize.define('Estacao', {
     },
     minigame: {
         type: DataTypes.STRING,
+        allowNull: false
+    }
+});
+
+const PeixeModel = sequelize.define('Peixe', {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    nome: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    local: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    xp: {
+        type: DataTypes.INTEGER,
         allowNull: false
     }
 });
@@ -120,9 +120,14 @@ const CompetidorPeixe = sequelize.define('CompetidorPeixe', {
 });
 
 CompeticaoModel.belongsTo(EstacaoModel);
+CompeticaoModel.hasMany(CompetidorPeixe);
+
 NPCModel.belongsToMany(PeixeModel, { through: CompetidorPeixe });
 PeixeModel.belongsToMany(NPCModel, { through: CompetidorPeixe });
+
 CompetidorPeixe.belongsTo(CompeticaoModel);
+CompetidorPeixe.belongsTo(NPCModel);
+CompetidorPeixe.belongsTo(PeixeModel);
 
 module.exports = {
     sequelize: sequelize,

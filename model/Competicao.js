@@ -1,5 +1,7 @@
 const {CompeticaoModel} = require('./bd');
 const {CompetidorPeixe} = require('./bd');
+const {NPCModel} = require('./bd');
+const {PeixeModel} = require('./bd');
 
 module.exports = {
     addCompeticao: async(compData) => {
@@ -10,21 +12,29 @@ module.exports = {
         return await CompetidorPeixe.create(compData);
     },
 
-    listaCompetidores: async(id, pagina, limite) => {
-        const competidores = await CompeticaoModel.findOne({
-            where: { id: id },
+    listaCompetidores: async(id) => {
+        const competicao = await CompeticaoModel.findByPk(id, {
             include: [
-              {
-                model: CompetidorPeixe,
-                include: [
-                  { model: NPCModel },
-                  { model: PeixeModel }
-                ]
-              }
-            ],
-            offset: (pagina - 1) * limite,
-            limit: limite
-        });
+                {
+                    model: CompetidorPeixe,
+                    include: [
+                        { model: NPCModel },
+                        { model: PeixeModel },
+                    ],
+                },
+                ],
+            });
+    
+        if (!competicao) {
+            return null;
+        }
+    
+        const competidores = competicao.CompetidorPeixes.map((competidorPeixe) => ({
+            id: competidorPeixe.id,
+            npc: competidorPeixe.NPC,
+            peixe: competidorPeixe.Peixe,
+        }));
+    
         return competidores;
     },
 

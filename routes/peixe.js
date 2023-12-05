@@ -47,7 +47,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', Auth.validaAcesso, Validadores.validaPeixe, async(req, res) => {
   try{
     let peixe = await PeixeService.addPeixe(req.body);
-    return res.status(200).json({peixe: peixe});
+    return res.status(200).json({peixes: peixe});
   } catch(e){
     return res.status(400).json({mensagem: 'Falha ao adicionar o peixe!'});
   }

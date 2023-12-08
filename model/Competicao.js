@@ -22,11 +22,11 @@ module.exports = {
                         { model: PeixeModel },
                     ],
                 },
-                ],
-            });
+            ],
+        });
     
         if (!competicao) {
-            return null;
+            return [];
         }
     
         const competidores = competicao.CompetidorPeixes.map((competidorPeixe) => ({
@@ -40,11 +40,6 @@ module.exports = {
 
     buscaCompeticao: async(id) => {
         return await CompeticaoModel.findByPk(id);
-    },
-
-    addPesca: async(npc, peixes) => {
-        const competidor = await CompetidorPeixe.findOne({where: {NPCId: npc}});
-        return await competidor.update({ peixes: peixes });
     },
 
     excluiCompeticao: async(id) => {

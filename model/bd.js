@@ -57,10 +57,6 @@ const NPCModel = sequelize.define('NPC', {
     diaAniversario: {
         type: DataTypes.INTEGER,
         allowNull: false
-    },
-    vencedor: {
-        type: DataTypes.INTEGER,
-        allowNull: true
     }
 });
 
@@ -104,10 +100,6 @@ const CompeticaoModel = sequelize.define('Competicao', {
     dia: {
         type: DataTypes.INTEGER,
         allowNull: false
-    },
-    vencedor: {
-        type: DataTypes.JSON,
-        allowNull: true
     }
 });
 

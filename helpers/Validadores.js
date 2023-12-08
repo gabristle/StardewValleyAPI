@@ -207,7 +207,7 @@ module.exports = {
     },
 
     validaCompetidor: (req, res, next) => {
-        const {NPCId, PeixeIds, CompeticaoId} = req.body;
+        const {NPCId, PeixeId, CompeticaoId} = req.body;
         if(!NPCId){
             return res.status(400).json({mensagem: 'O NPC informado é inválido, portanto não pode ser um competidor! Digite um ID de NPC válido.'});
         }
@@ -215,8 +215,11 @@ module.exports = {
         if(!NPCexistente){
             return res.status(400).json({mensagem: 'ID no NPC é inválido! Tente novamente.'});
         }
-        const peixesExistentes = PeixeService.peixesExistentes();
-        if(peixesExistentes.length != PeixeIds.length){
+        if(!PeixeId){
+            return res.status(400).json({mensagem: 'É necessário que o competidor tenha pescado um peixe'});
+        }
+        const peixesExistentes = PeixeService.buscaPorID(PeixeId);
+        if(peixesExistentes.length != PeixeId.length){
             return res.status(400).json({mensagem: 'Um ou mais IDs são inválidos! Tente novamente.'});
         }
         if(!CompeticaoId){

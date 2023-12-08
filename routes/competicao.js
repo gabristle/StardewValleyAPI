@@ -7,22 +7,12 @@ const Auth = require('../helpers/Auth');
 const Validadores = require('../helpers/Validadores');
 
 //lista todos os dados da competição
-router.get('/:id/:pagina/:limite', async (req,res) => {
+router.get('/:id', async (req,res) => {
     try{
-        let competidores = await CompeticaoService.listaCompetidores(req.params.id, req.params.pagina, req.params.limite);
+        let competidores = await CompeticaoService.listaCompetidores(req.params.id);
         return res.status(200).json({competidores: competidores});
     }catch(e){
         return res.status(400).json({mensagem: 'Falha ao listar participantes'});
-    }
-});
-
-//adiciona uma pesca
-router.put('/pesca/:id', Auth.validaAcesso, Validadores.validaCompetidor, async(req, res) => {
-    try{
-        let competidor = await CompeticaoService.addPesca(req.params.id, req.body);
-        return res.status(200).json({competidor: competidor});
-    }catch(e){
-        return res.status(400).json({mensagem: 'Falha ao adicionar novos peixes!'});
     }
 });
 
@@ -40,7 +30,7 @@ router.post('/competicao', Auth.validaAcesso, Validadores.validaCompeticao, asyn
 router.post('/competidor', Auth.validaAcesso, Validadores.validaCompetidor, async(req, res) => {
     try{
         let participante = await CompeticaoService.addCompetidor(req.body);
-        return res.status(200).json({participante: participante});
+        return res.status(200).json({competidor: competidor});
     }catch(e){
         return res.status(400).json({mensagem: 'Falha ao adicionar Competidor!'});
     }
@@ -55,7 +45,7 @@ router.delete('/competicao', Auth.validaAcesso, async(req,res) => {
     }
 });
 
-//exclui uma pesca
+//exclui um competidor
 router.delete('/competidor', Auth.validaAcesso, async(req, res) => {
     try{
         return res.status(200).json({estacao: await CompeticaoService.excluiCompetidor(req.params.id)});

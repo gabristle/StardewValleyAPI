@@ -2,8 +2,8 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "STARDEW VALLEY REST API",
-    "description": "API REST para gerenciamento de competições de pesca entre NPCs de Stardew Valley"
+    "title": "REST API",
+    "description": ""
   },
   "host": "localhost:3000",
   "basePath": "/",
@@ -771,7 +771,7 @@
         }
       }
     },
-    "/comp/{id}/{pagina}/{limite}": {
+    "/comp/{id}": {
       "get": {
         "description": "",
         "parameters": [
@@ -780,18 +780,6 @@
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "pagina",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "limite",
-            "in": "path",
-            "required": true,
-            "type": "string"
           }
         ],
         "responses": {
@@ -800,53 +788,6 @@
           },
           "400": {
             "description": "Bad Request"
-          }
-        }
-      }
-    },
-    "/comp/pesca/{id}": {
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "NPCId": {
-                  "example": "any"
-                },
-                "PeixeIds": {
-                  "example": "any"
-                },
-                "CompeticaoId": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
           }
         }
       }
@@ -928,7 +869,7 @@
                 "NPCId": {
                   "example": "any"
                 },
-                "PeixeIds": {
+                "PeixeId": {
                   "example": "any"
                 },
                 "CompeticaoId": {
